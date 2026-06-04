@@ -113,7 +113,7 @@ export function Dashboard() {
                   const inner = (
                     <div
                       className={cn(
-                        "flex items-center gap-2.5 rounded-lg border border-ide-border bg-ide-bg/40 px-3 py-2.5 text-sm transition-colors",
+                        "flex items-center gap-2.5 rounded-lg border border-ide-border bg-ide-bg/40 px-3 py-2.5 text-sm transition-colors min-w-0",
                         !locked && "hover:border-brand-600/40 hover:bg-ide-panel2",
                         locked && "opacity-50"
                       )}
@@ -128,15 +128,15 @@ export function Dashboard() {
                       <span className="font-mono text-xs text-ide-muted">
                         D{String(id).padStart(2, "0")}
                       </span>
-                      <span className="truncate">{day.title}</span>
+                      <span className="truncate min-w-0">{day.title}</span>
                     </div>
                   );
                   return locked ? (
-                    <div key={id} title="Bloqueado">
+                    <div key={id} title="Bloqueado" className="min-w-0">
                       {inner}
                     </div>
                   ) : (
-                    <Link key={id} href={`/day/${id}`}>
+                    <Link key={id} href={`/day/${id}`} className="min-w-0">
                       {inner}
                     </Link>
                   );

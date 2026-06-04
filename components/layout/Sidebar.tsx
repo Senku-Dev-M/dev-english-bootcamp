@@ -38,7 +38,7 @@ function DayRow({ dayId, onClick }: { dayId: number; onClick?: () => void }) {
   const inner = (
     <div
       className={cn(
-        "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors",
+        "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors min-w-0",
         active && "bg-brand-600/15 ring-1 ring-brand-600/30",
         !active && !locked && "hover:bg-ide-panel2",
         locked && "opacity-50"
@@ -56,7 +56,7 @@ function DayRow({ dayId, onClick }: { dayId: number; onClick?: () => void }) {
       </span>
       <span
         className={cn(
-          "truncate",
+          "truncate min-w-0",
           active ? "font-medium text-ide-text" : "text-ide-muted group-hover:text-ide-text"
         )}
       >
@@ -65,8 +65,8 @@ function DayRow({ dayId, onClick }: { dayId: number; onClick?: () => void }) {
     </div>
   );
 
-  if (locked) return <div title="Completa el día anterior para desbloquear">{inner}</div>;
-  return <Link href={`/day/${dayId}`} onClick={onClick}>{inner}</Link>;
+  if (locked) return <div title="Completa el día anterior para desbloquear" className="min-w-0">{inner}</div>;
+  return <Link href={`/day/${dayId}`} onClick={onClick} className="min-w-0">{inner}</Link>;
 }
 
 function ModuleGroup({ moduleId, onItemClick }: { moduleId: number; onItemClick?: () => void }) {
