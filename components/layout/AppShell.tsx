@@ -81,8 +81,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               >
                 <X size={18} />
               </button>
-              <div onClick={() => setMobileNavOpen(false)}>
-                <Sidebar onOpenSettings={openSettings} />
+              <div className="h-full">
+                <Sidebar
+                  onOpenSettings={openSettings}
+                  onItemClick={() => setMobileNavOpen(false)}
+                />
               </div>
             </motion.aside>
           </motion.div>

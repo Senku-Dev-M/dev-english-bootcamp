@@ -27,7 +27,7 @@ const moduleAccent: Record<number, string> = {
   7: "text-accent-green",
 };
 
-function DayRow({ dayId }: { dayId: number }) {
+function DayRow({ dayId, onClick }: { dayId: number; onClick?: () => void }) {
   const day = days.find((d) => d.id === dayId)!;
   const statusOf = useStore((s) => s.statusOf);
   const status = statusOf(dayId);
@@ -66,10 +66,10 @@ function DayRow({ dayId }: { dayId: number }) {
   );
 
   if (locked) return <div title="Completa el día anterior para desbloquear">{inner}</div>;
-  return <Link href={`/day/${dayId}`}>{inner}</Link>;
+  return <Link href={`/day/${dayId}`} onClick={onClick}>{inner}</Link>;
 }
 
-function ModuleGroup({ moduleId }: { moduleId: number }) {
+function ModuleGroup({ moduleId, onItemClick }: { moduleId: number; onItemClick?: () => void }) {
   const mod = modules.find((m) => m.id === moduleId)!;
   const completedDays = useStore((s) => s.completedDays);
   const doneInModule = mod.dayIds.filter((id) => completedDays.includes(id)).length;
@@ -110,7 +110,7 @@ function ModuleGroup({ moduleId }: { moduleId: number }) {
           >
             <div className="mt-1 space-y-0.5 pl-1">
               {mod.dayIds.map((id) => (
-                <DayRow key={id} dayId={id} />
+                <DayRow key={id} dayId={id} onClick={onItemClick} />
               ))}
             </div>
           </motion.div>
@@ -120,13 +120,13 @@ function ModuleGroup({ moduleId }: { moduleId: number }) {
   );
 }
 
-export function Sidebar({ onOpenSettings }: { onOpenSettings: () => void }) {
+export function Sidebar({ onOpenSettings, onItemClick }: { onOpenSettings: () => void; onItemClick?: () => void }) {
   const globalProgress = useStore((s) => s.globalProgress());
 
   return (
     <div className="flex h-full flex-col">
       {/* Brand */}
-      <Link href="/" className="flex items-center gap-2.5 px-4 py-5">
+      <Link href="/" className="flex items-center gap-2.5 px-4 py-5" onClick={onItemClick}>
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 shadow-lg shadow-brand-600/30">
           <Terminal size={18} className="text-white" />
         </div>
@@ -143,14 +143,17 @@ export function Sidebar({ onOpenSettings }: { onOpenSettings: () => void }) {
       {/* Modules */}
       <nav className="flex-1 space-y-2 overflow-y-auto px-3 pb-4">
         {modules.map((m) => (
-          <ModuleGroup key={m.id} moduleId={m.id} />
+          <ModuleGroup key={m.id} moduleId={m.id} onItemClick={onItemClick} />
         ))}
       </nav>
 
       {/* Settings */}
       <div className="border-t border-ide-border p-3">
         <button
-          onClick={onOpenSettings}
+          onClick={() => {
+            onOpenSettings();
+            onItemClick?.();
+          }}
           className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-ide-muted hover:bg-ide-panel2 hover:text-ide-text"
         >
           <Settings size={16} />
